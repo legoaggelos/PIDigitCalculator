@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception{
         VBox components = new VBox();
 
         Label text = new Label("Enter number of PI digits here(goes up to 60000):");
@@ -27,11 +27,14 @@ public class Application extends javafx.application.Application {
         showDigits.setOnAction(event -> {
             try {
                 int digitsCounter = Integer.parseInt(PIdigitInput.getText().trim());
+                if(digitsCounter<1){
+                    throw new Exception();
+                }
                 if(digitsCounter<=60000) {
                     digits.setText(getStringWithSpaceEvery47Chars(PIUtil.getPIDigits(digitsCounter)));
                 }
             } catch(Exception e){
-                digits.setText("That wasnt a number!");
+                digits.setText("That wasn't a acceptable number!");
             }
         });
 
@@ -39,6 +42,7 @@ public class Application extends javafx.application.Application {
         Scene scene = new Scene(components,314,314);
 
         primaryStage.setScene(scene);
+        primaryStage.setTitle("PIDigitCalculator");
         primaryStage.show();
     }
     public static String getStringWithSpaceEvery47Chars(String string){
